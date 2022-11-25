@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
-import { UsersEntity } from 'src/components/users/users.entity';
-import { UsersService } from 'src/components/users/users.service';
+import { UserEntity } from 'src/components/user/user.entity';
+import { UserService } from 'src/components/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
-    let user: UsersEntity;
+    let user: UserEntity;
 
     try {
       user = await this.usersService.findOneOrFail({ email });

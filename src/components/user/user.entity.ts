@@ -17,12 +17,12 @@ import {
 } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
-import { GroupsEntity } from './groups.entity';
+import { GroupEntity } from '../group/group.entity';
 import { Subject } from 'rxjs';
 import { SubjectsEntity } from '../subjects/subjects.entity';
 
 @Entity({ name: 'users' })
-export class UsersEntity {
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -41,9 +41,9 @@ export class UsersEntity {
   @Column()
   groupId: number;
 
-  @ManyToOne(() => GroupsEntity)
+  @ManyToOne(() => GroupEntity)
   @JoinColumn()
-  group: GroupsEntity;
+  group: GroupEntity;
 
   @ManyToMany(() => SubjectsEntity)
   @JoinTable({ name: 'users_subjects' })

@@ -3,24 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions, FindOptionsWhere } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersEntity } from './users.entity';
+import { UserEntity } from './user.entity';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
-    @InjectRepository(UsersEntity)
-    private readonly usersRepository: Repository<UsersEntity>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
-  async findAll(): Promise<UsersEntity[]> {
+  async findAll(): Promise<UserEntity[]> {
     return await this.usersRepository.find({
       relations: ['group', 'subjects'],
     });
   }
 
   async findOneOrFail(
-    conditions: FindOptionsWhere<UsersEntity>,
-  ): Promise<UsersEntity> {
+    conditions: FindOptionsWhere<UserEntity>,
+  ): Promise<UserEntity> {
     try {
       return await this.usersRepository.findOneOrFail({
         where: conditions,
@@ -30,7 +30,7 @@ export class UsersService {
     }
   }
 
-  async store(data: CreateUserDto): Promise<UsersEntity> {
+  async store(data: CreateUserDto): Promise<UserEntity> {
     const user = this.usersRepository.create(data);
     return await this.usersRepository.save(user);
   }

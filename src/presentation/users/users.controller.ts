@@ -9,13 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersService } from './users.service';
+import { CreateUserDto } from 'src/components/user/dto/create-user.dto';
+import { UpdateUserDto } from 'src/components/user/dto/update-user.dto';
+import { UserService } from 'src/components/user/user.service';
 
 @Controller('api/v1/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UserService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
