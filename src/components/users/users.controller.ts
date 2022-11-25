@@ -6,7 +6,9 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
@@ -15,6 +17,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async index(): Promise<any> {
     return this.usersService.findAll();
@@ -26,20 +29,20 @@ export class UsersController {
   }
 
   @Get(':id')
-  async read(@Param('id') id: number): Promise<any> {
-    return this.usersService.findOneOrFail(id);
+  async read(@Param('id') id: string): Promise<any> {
+    return this.usersService.findOneOrFail({ id });
   }
 
   @Put(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() body: UpdateUserDto,
   ): Promise<any> {
     return await this.usersService.update(id, body);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<any> {
+  async delete(@Param('id') id: string): Promise<any> {
     return await this.usersService.destroy(id);
   }
 }

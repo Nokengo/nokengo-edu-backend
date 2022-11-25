@@ -1,5 +1,7 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -12,8 +14,8 @@ import * as bcrypt from 'bcrypt';
 
 @Entity({ name: 'users' })
 export class UsersEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -33,8 +35,22 @@ export class UsersEntity {
   @DeleteDateColumn()
   deletedAt: string;
 
+  private tempPassword: string;
+
   @BeforeInsert()
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);
+  }
+
+  @AfterLoad()
+  private loadTempPassword(): void {
+    this.tempPassword = this.password;
+  }
+
+  @BeforeUpdate()
+  updatePassword() {
+    if (this.password && this.tempPassword !== this.password) {
+      this.password = bcrypt.hashSync(this.password, 8);
+    }
   }
 }
