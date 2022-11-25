@@ -15,7 +15,11 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      migrations: [__dirname + '/src/infra/typeorm/migrations/*{.ts,.js}'],
       synchronize: true,
+      cli: {
+        migrationsDir: 'src/infra/typeorm/migrations',
+      },
     } as TypeOrmModuleOptions),
     UsersModule,
     AuthModule,
