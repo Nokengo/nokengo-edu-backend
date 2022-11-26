@@ -17,7 +17,7 @@ import { UserService } from 'src/components/user/user.service';
 export class UsersController {
   constructor(private readonly usersService: UserService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
   async index(): Promise<any> {
     return this.usersService.findAll();
