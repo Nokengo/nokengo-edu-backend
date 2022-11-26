@@ -1,4 +1,6 @@
 import { OnModuleInit } from '@nestjs/common';
+import { PeerServer } from 'peer';
+
 import {
   WebSocketGateway,
   SubscribeMessage,
