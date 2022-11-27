@@ -3,8 +3,8 @@ import { UsersModule } from './presentation/users/users.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { MeetingsModule } from './presentation/meetings/meetings.module';
 import { GatewayModule } from './gateway/gateway.module';
+import { MeetingsModule } from './presentation/meetings/meetings.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { GatewayModule } from './gateway/gateway.module';
       username: process.env.TYPEORM_USERNAME,
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
+      schema: process.env.TYPEORM_SCHEMA,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       migrations: [__dirname + '/src/infra/typeorm/migrations/*{.ts,.js}'],
       synchronize: true,
@@ -25,8 +26,8 @@ import { GatewayModule } from './gateway/gateway.module';
     } as TypeOrmModuleOptions),
     UsersModule,
     AuthModule,
-    MeetingsModule,
     GatewayModule,
+    MeetingsModule,
   ],
 })
 export class AppModule {}

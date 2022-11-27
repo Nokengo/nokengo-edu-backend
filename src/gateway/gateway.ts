@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'dgram';
 import { Server } from 'socket.io';
-import { MeetingService } from 'src/components/meeting/meeting.service';
+// import { MeetingService } from 'src/components/meeting/meeting.service';
 
 @WebSocketGateway({
   // namespace: 'webRTCPeers',
@@ -20,7 +20,6 @@ import { MeetingService } from 'src/components/meeting/meeting.service';
   },
 })
 export class MyGateway implements OnModuleInit {
-  constructor(private readonly meetingService: MeetingService) {}
   @WebSocketServer()
   server: Server;
 
@@ -51,6 +50,10 @@ export class MyGateway implements OnModuleInit {
       socket.on('disconnect', () => {
         console.log(socket.id);
         console.log('disconnected');
+      });
+
+      socket.on('ready', (userId) => {
+        socket.broadcast.emit('user-ready', userId);
       });
     });
   }

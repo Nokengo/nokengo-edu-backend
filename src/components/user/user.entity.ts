@@ -7,19 +7,14 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { GroupEntity } from '../group/group.entity';
-import { Subject } from 'rxjs';
-import { SubjectsEntity } from '../subjects/subjects.entity';
+import { SubjectEntity } from '../subject/subject.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -45,9 +40,12 @@ export class UserEntity {
   @JoinColumn()
   group: GroupEntity;
 
-  @ManyToMany(() => SubjectsEntity)
-  @JoinTable({ name: 'users_subjects' })
-  subjects: SubjectsEntity[];
+  @Column({ nullable: true })
+  subjectId?: number;
+
+  @ManyToOne(() => SubjectEntity)
+  @JoinColumn()
+  subject: SubjectEntity;
 
   @UpdateDateColumn()
   updatedAt: string;

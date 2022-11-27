@@ -3,10 +3,9 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { SubjectsEntity } from '../subjects/subjects.entity';
+import { SubjectEntity } from '../subject/subject.entity';
 import { UserEntity } from '../user/user.entity';
 
 export enum StatusEnum {
@@ -20,14 +19,14 @@ export class MeetingEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  studentId: string;
+  @Column({ nullable: true })
+  studentId?: string;
 
-  @Column()
-  subjectId: number;
+  @Column({ nullable: true })
+  subjectId?: number;
 
-  @Column()
-  teacherId: string;
+  @Column({ nullable: true })
+  teacherId?: string;
 
   @Column({ type: 'enum', enum: StatusEnum, default: StatusEnum.AVAILABLE })
   status: StatusEnum;
@@ -35,9 +34,9 @@ export class MeetingEntity {
   @Column({ nullable: true })
   sdp?: string | null;
 
-  @ManyToOne(() => SubjectsEntity)
+  @ManyToOne(() => SubjectEntity)
   @JoinColumn()
-  subject: SubjectsEntity;
+  subject: SubjectEntity;
 
   @ManyToOne(() => UserEntity)
   @JoinColumn()
