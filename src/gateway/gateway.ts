@@ -1,21 +1,11 @@
 import { OnModuleInit } from '@nestjs/common';
-import { PeerServer } from 'peer';
 
-import {
-  WebSocketGateway,
-  SubscribeMessage,
-  MessageBody,
-  WebSocketServer,
-  ConnectedSocket,
-} from '@nestjs/websockets';
-import { Socket } from 'dgram';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { MeetingService } from 'src/components/meeting/meeting.service';
 import { StatusEnum } from 'src/components/meeting/meeting.entity';
-// import { MeetingService } from 'src/components/meeting/meeting.service';
 
 @WebSocketGateway({
-  // namespace: 'webRTCPeers',
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
@@ -44,7 +34,7 @@ export class MyGateway implements OnModuleInit {
 
         if (data.role === 1) {
           try {
-            const meeting = await this.meetingService.update(data.meetingId, {
+            await this.meetingService.update(data.meetingId, {
               sdp: socket.id,
               status: StatusEnum.AVAILABLE,
             });
@@ -68,12 +58,9 @@ export class MyGateway implements OnModuleInit {
         console.log('disconnected');
 
         try {
-          const meeting = await this.meetingService.updateBySocketId(
-            socket.id,
-            {
-              status: StatusEnum.CLOSED,
-            },
-          );
+          await this.meetingService.updateBySocketId(socket.id, {
+            status: StatusEnum.CLOSED,
+          });
         } catch (err) {}
       });
 
